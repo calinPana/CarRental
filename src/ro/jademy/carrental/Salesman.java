@@ -6,4 +6,23 @@ public class Salesman {
 
     public String firstName;
     public String lastName;
+    public SalesmanAccount salesmanAccount;
+
+    public Salesman(String firstName, String lastName, SalesmanAccount salesmanAccount) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.salesmanAccount = salesmanAccount;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public SalesmanAccount getSalesmanAccount() {
+        return salesmanAccount;
+    }
 }

@@ -1,31 +1,58 @@
 package ro.jademy.carrental;
 
-public class Car {
+public abstract class Car {
 
     // Q: how can we better represent the car make?
-    public String make;
-    public String model;
-    public Integer year;
+//    private String make;
+//    private String model;
+//    private Integer year;
+
+    boolean isRented = true;
+
+    CarBrandDetails carBrandDetails;
 
     // Q: how can we better represent the car type?
-    public String carType; // coupe, sedan, hatchback, convertible, wagon, SUV
-
+    //private String carType; // coupe, sedan, hatchback, convertible, wagon, SUV
+    private CarType carType;
     // Q: how can we better represent the motor type?
-    public String fuelType; // diesel, gasoline, alternative
+    private String fuelType; // diesel, gasoline, alternative
 
-    public Integer doorNumber;
+    private Integer doorNumber;
 
-    public String color;
+    private String color;
 
     // Q: how can we better represent the transmission type?
-    public String transmissionType; // automatic, manual
+    private String transmissionType; // automatic, manual
 
     // Q: how can we better represent the engine?
-    public String engine;
+    private String engine;
 
     // Q: how can we better represent money value?
-    public String basePrice;
+    private String basePrice;
 
     // Q: do we need a constructor other than the default one?
     // Q: how can we better protect the car data?
+
+//    public Car(CarBrandDetails carBrandDetails, CarType carType) {
+//        this.carBrandDetails = carBrandDetails;
+//        this.carType = carType;
+//    }
+
+    public Car(CarBrandDetails carBrandDetails, CarType carType, String color) {
+        this.carBrandDetails = carBrandDetails;
+        this.carType = carType;
+        this.color = color;
+    }
+
+    public CarBrandDetails getCarBrandDetails() {
+        return carBrandDetails;
+    }
+
+    public CarType getCarType() {
+        return carType;
+    }
+
+    public String getColor() {
+        return color;
+    }
 }

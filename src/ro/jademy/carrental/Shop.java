@@ -1,11 +1,24 @@
 package ro.jademy.carrental;
 
+import java.util.*;
+
 public class Shop {
     // Q: what fields and methods should this class contain?
+
+    private ArrayList<SalesmanAccount> accounts = new ArrayList<>();
+    private ArrayList<Car> cars = new ArrayList<>();
+
+    public Shop(ArrayList<SalesmanAccount> accounts, ArrayList<Car> cars) {
+        this.accounts.addAll(accounts);
+        this.cars.addAll(cars);
+    }
 
     public boolean login(String username, String password) {
 
         // TODO: implement a basic user login
+        SalesmanAccount account = new SalesmanAccount(username, password);
+        if (account.equals(anotherAccount))
+
 
         return false;
     }
@@ -46,4 +59,6 @@ public class Shop {
 
         // Q: what should be the return type of this method?
     }
+
+
 }
