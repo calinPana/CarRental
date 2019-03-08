@@ -1,4 +1,4 @@
-package ro.jademy.carrental;
+package ro.jademy.carrental.car;
 
 public class CarBrandDetails {
 

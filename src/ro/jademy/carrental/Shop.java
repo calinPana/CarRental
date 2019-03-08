@@ -1,26 +1,51 @@
 package ro.jademy.carrental;
 
-import java.util.*;
+import ro.jademy.carrental.car.Car;
+
+import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Shop {
     // Q: what fields and methods should this class contain?
 
-    private ArrayList<SalesmanAccount> accounts = new ArrayList<>();
+    private ArrayList<Salesman> salesmen = new ArrayList<>();
     private ArrayList<Car> cars = new ArrayList<>();
 
-    public Shop(ArrayList<SalesmanAccount> accounts, ArrayList<Car> cars) {
-        this.accounts.addAll(accounts);
+    public Shop(ArrayList<Salesman> accounts, ArrayList<Car> cars) {
+        this.salesmen.addAll(accounts);
         this.cars.addAll(cars);
     }
 
     public boolean login(String username, String password) {
 
         // TODO: implement a basic user login
-        SalesmanAccount account = new SalesmanAccount(username, password);
-        if (account.equals(anotherAccount))
+        boolean correctUser = false;
+        boolean correctPassword = false;
+        int accountNumber = 0;
+        for (int i = 0; i < salesmen.size(); i++) {
+            if (username.equals(salesmen.get(i).getAccountDetails().getUsername())) {
+                correctUser = true;
+                accountNumber = i;
+                break;
+            }
+        }
+        if (salesmen.get(accountNumber).getAccountDetails().getPassword().equals(password)) {
+            correctPassword = true;
 
+//        for (int i = 0; i < accounts.size(); i++) {
+//            if (password.equals(accounts.get(i).getPassword())) {
+//                correctPassword = true;
+//            }
+//            break;
+        }
 
+        if (correctUser && correctPassword) {
+            System.out.println("Login details are correct");
+            return true;
+        }
+        System.out.println("Your username or password are wrong");
         return false;
+
     }
 
     public void showMenu() {
@@ -38,6 +63,12 @@ public class Shop {
         System.out.println("6. Exit");
     }
 
+//    public void listAllCars() {
+//        for (int i = 0; i < cars.size(); i++) {
+//                System.out.println(i + 1 + ". " + cars.get(i).getCarBrandDetails().getMake() + " " + cars.get(i).getCarBrandDetails().getModel());
+//        }
+//    }
+
     public void showListMenuOptions() {
 
         System.out.println("Select an action from below:");
@@ -47,7 +78,74 @@ public class Shop {
         // TODO: add additional filter methods based on car specs
 
         System.out.println("4. Back to previous menu");
+    }
 
+    public void chooseListMenuOptionsAllCars() {
+        Scanner sc = new Scanner(System.in);
+        int choice = sc.nextInt();
+        switch (choice) {
+            case 1:
+                System.out.println("We have the following makes: ");
+                for (int i = 0; i < cars.size(); i++) {
+                    System.out.println(i + 1 + ". " + cars.get(i).getCarBrandDetails().getMake());
+                }
+                break;
+
+            case 2:
+                System.out.println("We have the following models: ");
+                for (int i = 0; i < carBrandDetails.size(); i++) {
+                    System.out.println(i + 1 + ". " + cars.get(i).getCarBrandDetails().getModel());
+                }
+                break;
+
+            case 4:
+                showMenu();
+        }
+    }
+
+    public void chooseListMenuOptionsAvailableCars() {
+        Scanner sc = new Scanner(System.in);
+        int choice = sc.nextInt();
+        switch (choice) {
+            case 1:
+                System.out.println("The following makes are available: ");
+                ArrayList<String> makes = new ArrayList<>();
+                for (int i = 0; i < cars.size(); i++) {
+                    if (!cars.get(i).isRented() && !cars.contains(cars.get(i).getCarBrandDetails().getMake())) {
+                        makes.add(cars.get(i).getCarBrandDetails().getMake());
+                        System.out.println(i + 1 + ". " + cars.get(i).getCarBrandDetails().getMake());
+                    }
+                }
+                break;
+
+            case 2:
+                System.out.println("The following models are available: ");
+                ArrayList<String> models = new ArrayList<>();
+                for (int i = 0; i < cars.size(); i++) {
+                    if (!cars.get(i).isRented() && !cars.contains(cars.get(i).getCarBrandDetails().getModel())) {
+                        models.add(cars.get(i).getCarBrandDetails().getModel());
+                        System.out.println(i + 1 + ". " + cars.get(i).getCarBrandDetails().getModel());
+                    }
+                }
+                break;
+
+            case 3:
+                System.out.println("Option in development");
+
+            case 4:
+                showMenu();
+                chooseListMenuOptionsAvailableCars();
+        }
+    }
+
+    public void listRentedCars() {
+        System.out.println("These cars are rented:");
+        for (int i = 0; i < cars.size(); i++) {
+            if (cars.get(i).isRented()) {
+                System.out.println(cars.get(i).getCarBrandDetails().getMake() + " " + cars.get(i).getCarBrandDetails().getModel() +
+                        " with the number " + (i + 1));
+            }
+        }
     }
 
     public void calculatePrice(int numberOfDays) {
@@ -59,6 +157,4 @@ public class Shop {
 
         // Q: what should be the return type of this method?
     }
-
-
 }

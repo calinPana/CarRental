@@ -1,4 +1,4 @@
-package ro.jademy.carrental;
+package ro.jademy.carrental.car;
 
 public abstract class Car {
 
@@ -7,7 +7,8 @@ public abstract class Car {
 //    private String model;
 //    private Integer year;
 
-    boolean isRented = true;
+    boolean isRented;
+    int id;
 
     CarBrandDetails carBrandDetails;
 
@@ -54,5 +55,13 @@ public abstract class Car {
 
     public String getColor() {
         return color;
+    }
+
+    public boolean isRented() {
+        return isRented;
+    }
+
+    public void setIsRented(boolean isRented){
+        this.isRented=isRented;
     }
 }

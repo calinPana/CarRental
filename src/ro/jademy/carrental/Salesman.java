@@ -6,12 +6,12 @@ public class Salesman {
 
     public String firstName;
     public String lastName;
-    public SalesmanAccount salesmanAccount;
+    public AccountDetails accountDetails;
 
-    public Salesman(String firstName, String lastName, SalesmanAccount salesmanAccount) {
+    public Salesman(String firstName, String lastName, AccountDetails accountDetails) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.salesmanAccount = salesmanAccount;
+        this.accountDetails = accountDetails;
     }
 
     public String getFirstName() {
@@ -22,7 +22,7 @@ public class Salesman {
         return lastName;
     }
 
-    public SalesmanAccount getSalesmanAccount() {
-        return salesmanAccount;
+    public AccountDetails getAccountDetails() {
+        return accountDetails;
     }
 }
