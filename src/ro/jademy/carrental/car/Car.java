@@ -9,6 +9,7 @@ public abstract class Car {
 
     boolean isRented;
     int id;
+    int rentPeriodDays = 0;
 
     CarBrandDetails carBrandDetails;
 
@@ -61,7 +62,16 @@ public abstract class Car {
         return isRented;
     }
 
-    public void setIsRented(boolean isRented){
-        this.isRented=isRented;
+    public int getRentPeriodDays() {
+        return rentPeriodDays;
+    }
+
+
+
+
+    public void rent (int rentPeriodDays){
+        isRented=true;
+        this.rentPeriodDays=rentPeriodDays;
     }
 }
+

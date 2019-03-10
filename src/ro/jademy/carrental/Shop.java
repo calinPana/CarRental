@@ -1,6 +1,9 @@
 package ro.jademy.carrental;
 
+import ro.jademy.carrental.Person.Customer;
+import ro.jademy.carrental.Person.Person;
 import ro.jademy.carrental.car.Car;
+import ro.jademy.carrental.car.CarBrandDetails;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -8,12 +11,22 @@ import java.util.Scanner;
 public class Shop {
     // Q: what fields and methods should this class contain?
 
-    private ArrayList<Salesman> salesmen = new ArrayList<>();
+    private ArrayList<AccountDetails> accounts = new ArrayList<>();
     private ArrayList<Car> cars = new ArrayList<>();
+    private ArrayList<Customer> customers = new ArrayList<>();
+    private int income = 0;
 
-    public Shop(ArrayList<Salesman> accounts, ArrayList<Car> cars) {
-        this.salesmen.addAll(accounts);
-        this.cars.addAll(cars);
+    public Shop(ArrayList<AccountDetails> accounts, ArrayList<Car> cars) {
+        this.accounts = accounts;
+        this.cars = cars;
+    }
+
+    public ArrayList<Customer> getCustomers() {
+        return customers;
+    }
+
+    public void setCustomers(ArrayList<Customer> customers) {
+        this.customers = customers;
     }
 
     public boolean login(String username, String password) {
@@ -22,14 +35,14 @@ public class Shop {
         boolean correctUser = false;
         boolean correctPassword = false;
         int accountNumber = 0;
-        for (int i = 0; i < salesmen.size(); i++) {
-            if (username.equals(salesmen.get(i).getAccountDetails().getUsername())) {
+        for (int i = 0; i < accounts.size(); i++) {
+            if (username.equals(accounts.get(i).getUsername())) {
                 correctUser = true;
                 accountNumber = i;
                 break;
             }
         }
-        if (salesmen.get(accountNumber).getAccountDetails().getPassword().equals(password)) {
+        if (accounts.get(accountNumber).getPassword().equals(password)) {
             correctPassword = true;
 
 //        for (int i = 0; i < accounts.size(); i++) {
@@ -93,8 +106,19 @@ public class Shop {
 
             case 2:
                 System.out.println("We have the following models: ");
-                for (int i = 0; i < carBrandDetails.size(); i++) {
+                for (int i = 0; i < cars.size(); i++) {
                     System.out.println(i + 1 + ". " + cars.get(i).getCarBrandDetails().getModel());
+                }
+                break;
+
+            case 3:
+                ArrayList<Integer> carPrices = new ArrayList<>();
+                System.out.println("We offer the following prices: ");
+                for (int i = 0; i < cars.size(); i++) {
+                    System.out.println(cars.get(i).getCarBrandDetails().getPrice() + "$ for a " +
+                            cars.get(i).getCarBrandDetails().getMake() + " " +
+                            cars.get(i).getCarBrandDetails().getModel() + " from " +
+                            cars.get(i).getCarBrandDetails().getYear());
                 }
                 break;
 
@@ -130,7 +154,19 @@ public class Shop {
                 break;
 
             case 3:
-                System.out.println("Option in development");
+                ArrayList<Integer> carPrices = new ArrayList<>();
+                System.out.println("We offer the following prices: ");
+                for (int i = 0; i < cars.size(); i++) {
+                    if (!cars.get(i).isRented()) {
+                        System.out.println(cars.get(i).getCarBrandDetails().getPrice() + "$ for a " +
+                                cars.get(i).getCarBrandDetails().getMake() + " " +
+                                cars.get(i).getCarBrandDetails().getModel() + " from " +
+                                cars.get(i).getCarBrandDetails().getYear());
+                    }
+                }
+                break;
+
+            //System.out.println("Option in development");
 
             case 4:
                 showMenu();
@@ -142,13 +178,38 @@ public class Shop {
         System.out.println("These cars are rented:");
         for (int i = 0; i < cars.size(); i++) {
             if (cars.get(i).isRented()) {
-                System.out.println(cars.get(i).getCarBrandDetails().getMake() + " " + cars.get(i).getCarBrandDetails().getModel() +
-                        " with the number " + (i + 1));
+                System.out.println(cars.get(i).getCarBrandDetails().getMake() + " " +
+                        cars.get(i).getCarBrandDetails().getModel() + " with the number " + (i + 1));
             }
         }
     }
 
-    public void calculatePrice(int numberOfDays) {
+    public void checkIncome() {
+        int currentIncome = 0;
+        for (int i = 0; i < cars.size(); i++) {
+            if (cars.get(i).isRented()) {
+                currentIncome += cars.get(i).getCarBrandDetails().getPrice() *
+                        cars.get(i).getRentPeriodDays();
+            }
+        }
+        System.out.println("Our income from currently rented cars is " + currentIncome + "$ " +
+                "and our total income is " + income + "$");
+    }
+
+    public void logout() {
+
+    }
+
+    public Integer calculateDiscount(int price, int numberOfDays) {
+        int discount = 0;
+        if (numberOfDays < 3) {
+            discount = 0;
+        } else if (numberOfDays > 3 && numberOfDays < 7) {
+            discount = 10;
+        } else if (numberOfDays >= 7) {
+            discount = 20;
+        }
+        return discount;
         // TODO: apply a discount to the base price of a car based on the number of rental days
         // TODO: document the implemented discount algorithm
 
@@ -156,5 +217,24 @@ public class Shop {
         //       weekdays and national holidays in which the discount should be smaller
 
         // Q: what should be the return type of this method?
+    }
+
+    public void findCustomer(String firstName, String lastName) {
+        for (int i = 0; i < customers.size(); i++) {
+            if (customers.get(i).getFirstName().equals(firstName) && customers.get(i).getLastName().equals(lastName)) {
+                System.out.println("Customer " + firstName + " " + lastName + " has rented " +
+                        customers.get(i).getTimesRented() + " times from us");
+            }
+            break;
+        }
+    }
+
+    public void rent(Customer customer, Car car, int numberOfDays) {
+        customer.rents();
+        car.rent(numberOfDays);
+        income += car.getCarBrandDetails().getPrice() * numberOfDays -
+                car.getCarBrandDetails().getPrice() * numberOfDays *
+                        calculateDiscount(car.getCarBrandDetails().getPrice(), numberOfDays) / 100;
+
     }
 }

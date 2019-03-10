@@ -1,4 +1,6 @@
-package ro.jademy.carrental;
+package ro.jademy.carrental.Person;
+
+import ro.jademy.carrental.AccountDetails;
 
 public class Salesman {
 
