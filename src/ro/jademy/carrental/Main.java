@@ -31,70 +31,43 @@ public class Main {
         cars.add(new X5(2012, 100, "White"));
         cars.add(new X5(2015, 120, "Black"));
 
-//        cars.get(0).rent(2);
-//        cars.get(3).rent(5);
-
-        ArrayList<AccountDetails> accounts = new ArrayList<>();
-        AccountDetails acc1 = new AccountDetails("calinelu", "admin");
-        accounts.add(acc1);
-        Salesman salesman1 = new Salesman("Calin", "Pana", acc1);
+        ArrayList<Salesman> salesmen = new ArrayList<>();
+        Salesman salesman1 = new Salesman("Calin", "Pana", new AccountDetails("calinelu", "admin"));
+        Salesman salesman2 = new Salesman("Catalin", "Tudorache", new AccountDetails("tudorelu", "user"));
+        salesmen.addAll(Arrays.asList(salesman1, salesman2));
 
         ArrayList<Customer> customers = new ArrayList<>();
         customers.add(new Customer("Ion", "Popescu"));
         customers.add(new Customer("Ioana", "Popa"));
 
 
-        Shop s = new Shop(accounts, cars);
+        Shop s = new Shop(salesmen, cars);
 
         s.setCustomers(customers);
 
         s.rent(customers.get(1), cars.get(1), 9);
 
         Scanner sc = new Scanner(System.in);
+//
+//        System.out.println("Please write your username");
+//        String username = sc.nextLine();
+//        System.out.println("Now please write your password");
+//        String password = sc.nextLine();
 
-        System.out.println("Please write your username");
-        String username = sc.nextLine();
-        System.out.println("Now please write your password");
-        String password = sc.nextLine();
-
-        if (s.login(username, password)) {
+        if (s.login()) {
             s.showMenu();
 
             //navigarea la infinit prin meniuri ar trebui facuta cu recursivitate, cred
             int option = sc.nextInt();
-            switch (option) {
-                case 1:
-                    s.showListMenuOptions();
-                    s.chooseListMenuOptionsAllCars();
-                    break;
-                case 2:
-                    s.showListMenuOptions();
-                    s.chooseListMenuOptionsAvailableCars();
-                    break;
-                case 3:
-                    s.listRentedCars();
-                case 4:
-                    s.checkIncome();
+            s.chooseFromMenu(option);
 
-                    break;
-                case 5:
-//                    System.out.println("Please write your username");
-//                    String username = sc.nextLine();
-//                    System.out.println("Now please write your password");
-//                    String password = sc.nextLine();
-
-                    if (s.login(username, password)) {
-                        s.showMenu();
-                    }
-            }
-
+//            System.out.println(customers.get(0).getTimesRented());
+//            s.findCustomer("Ion", "Popescu");
+            //s.calculatePrice(cars.get());
         }
 
 //            System.out.println(customers.get(0));
 //            customers.get(0).rents();
-//            System.out.println(customers.get(0).getTimesRented());
-//            s.findCustomer("Ion", "Popescu");
-            //s.calculatePrice(cars.get());
 
         // show login message
         // se citeste userul si parola si se paseaza ca parametri ai metodei login

@@ -30,7 +30,7 @@ public abstract class Car {
     private String engine;
 
     // Q: how can we better represent money value?
-    private String basePrice;
+    // String basePrice;
 
     // Q: do we need a constructor other than the default one?
     // Q: how can we better protect the car data?

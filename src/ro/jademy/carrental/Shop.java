@@ -1,9 +1,8 @@
 package ro.jademy.carrental;
 
 import ro.jademy.carrental.Person.Customer;
-import ro.jademy.carrental.Person.Person;
+import ro.jademy.carrental.Person.Salesman;
 import ro.jademy.carrental.car.Car;
-import ro.jademy.carrental.car.CarBrandDetails;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -11,13 +10,13 @@ import java.util.Scanner;
 public class Shop {
     // Q: what fields and methods should this class contain?
 
-    private ArrayList<AccountDetails> accounts = new ArrayList<>();
+    private ArrayList<Salesman> salesmen = new ArrayList<>();
     private ArrayList<Car> cars = new ArrayList<>();
     private ArrayList<Customer> customers = new ArrayList<>();
     private int income = 0;
 
-    public Shop(ArrayList<AccountDetails> accounts, ArrayList<Car> cars) {
-        this.accounts = accounts;
+    public Shop(ArrayList<Salesman> salesmen, ArrayList<Car> cars) {
+        this.salesmen = salesmen;
         this.cars = cars;
     }
 
@@ -29,24 +28,27 @@ public class Shop {
         this.customers = customers;
     }
 
-    public boolean login(String username, String password) {
-
-        // TODO: implement a basic user login
+    public boolean login() {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Please write your username");
+        String username = sc.nextLine();
+        System.out.println("Now please write your password");
+        String password = sc.nextLine();
         boolean correctUser = false;
         boolean correctPassword = false;
         int accountNumber = 0;
-        for (int i = 0; i < accounts.size(); i++) {
-            if (username.equals(accounts.get(i).getUsername())) {
+        for (int i = 0; i < salesmen.size(); i++) {
+            if (username.equals(salesmen.get(i).getAccountDetails().getUsername())) {
                 correctUser = true;
                 accountNumber = i;
                 break;
             }
         }
-        if (accounts.get(accountNumber).getPassword().equals(password)) {
+        if (salesmen.get(accountNumber).getAccountDetails().getPassword().equals(password)) {
             correctPassword = true;
 
-//        for (int i = 0; i < accounts.size(); i++) {
-//            if (password.equals(accounts.get(i).getPassword())) {
+//        for (int i = 0; i < salesmen.size(); i++) {
+//            if (password.equals(salesmen.get(i).getPassword())) {
 //                correctPassword = true;
 //            }
 //            break;
@@ -82,6 +84,44 @@ public class Shop {
 //        }
 //    }
 
+    public void chooseFromMenu(int option) {
+        switch (option) {
+            case 1:
+                System.out.println("--------------")
+                System.out.println("|Our cars are:");
+                for (int i = 0; i < cars.size(); i++) {
+                    System.out.println(i + 1 + ". " + cars.get(i).getCarBrandDetails().getMake() + " " + cars.get(i).getCarBrandDetails().getModel() +
+                            " which costs " + cars.get(i).getCarBrandDetails().getPrice() + "$");
+                }
+                showListMenuOptions();
+                chooseListMenuOptionsAllCars(option);
+                break;
+            case 2:
+                System.out.println("Our available cars are:");
+                for (int i = 0; i < cars.size(); i++) {
+                    if (!cars.get(i).isRented()) {
+                        System.out.println(i + 1 + ". " + cars.get(i).getCarBrandDetails().getMake() + " " + cars.get(i).getCarBrandDetails().getModel() +
+                                " which costs " + cars.get(i).getCarBrandDetails().getPrice() + "$");
+                    }
+                }
+                showListMenuOptions();
+                chooseListMenuOptionsAvailableCars(option);
+                break;
+            case 3:
+                listRentedCars();
+            case 4:
+                checkIncome();
+
+                break;
+            case 5:
+                System.out.println("Goodbye!");
+                login();
+            case 6:
+                System.out.println("Goodbye!");
+                break;
+        }
+    }
+
     public void showListMenuOptions() {
 
         System.out.println("Select an action from below:");
@@ -93,7 +133,7 @@ public class Shop {
         System.out.println("4. Back to previous menu");
     }
 
-    public void chooseListMenuOptionsAllCars() {
+    public void chooseListMenuOptionsAllCars(int option) {
         Scanner sc = new Scanner(System.in);
         int choice = sc.nextInt();
         switch (choice) {
@@ -102,12 +142,30 @@ public class Shop {
                 for (int i = 0; i < cars.size(); i++) {
                     System.out.println(i + 1 + ". " + cars.get(i).getCarBrandDetails().getMake());
                 }
+                System.out.println("Press 1 to go back or anything else to exit");
+                int secondaryChoice = sc.nextInt();
+                if (secondaryChoice == 1) {
+                    showListMenuOptions();
+                    int tertiaryChoice = sc.nextInt();
+                    chooseListMenuOptionsAllCars(tertiaryChoice);
+                } else {
+                    System.out.println("Goodbye!");
+                }
                 break;
 
             case 2:
                 System.out.println("We have the following models: ");
                 for (int i = 0; i < cars.size(); i++) {
                     System.out.println(i + 1 + ". " + cars.get(i).getCarBrandDetails().getModel());
+                }
+                System.out.println("Press 1 to go back or anything else to exit");
+                secondaryChoice = sc.nextInt();
+                if (secondaryChoice == 1) {
+                    showListMenuOptions();
+                    int tertiaryChoice = sc.nextInt();
+                    chooseListMenuOptionsAllCars(tertiaryChoice);
+                } else {
+                    System.out.println("Goodbye!");
                 }
                 break;
 
@@ -120,14 +178,25 @@ public class Shop {
                             cars.get(i).getCarBrandDetails().getModel() + " from " +
                             cars.get(i).getCarBrandDetails().getYear());
                 }
+                System.out.println("Press 1 to go back or anything else to exit");
+                secondaryChoice = sc.nextInt();
+                if (secondaryChoice == 1) {
+                    showListMenuOptions();
+                    int tertiaryChoice = sc.nextInt();
+                    chooseListMenuOptionsAllCars(tertiaryChoice);
+                } else {
+                    System.out.println("Goodbye!");
+                }
                 break;
 
             case 4:
                 showMenu();
+                int tertiaryChoice = sc.nextInt();
+                chooseFromMenu(tertiaryChoice);
         }
     }
 
-    public void chooseListMenuOptionsAvailableCars() {
+    public void chooseListMenuOptionsAvailableCars(int option) {
         Scanner sc = new Scanner(System.in);
         int choice = sc.nextInt();
         switch (choice) {
@@ -140,6 +209,15 @@ public class Shop {
                         System.out.println(i + 1 + ". " + cars.get(i).getCarBrandDetails().getMake());
                     }
                 }
+                System.out.println("Press 1 to go back or anything else to exit");
+                int secondaryChoice = sc.nextInt();
+                if (secondaryChoice == 1) {
+                    showListMenuOptions();
+                    int tertiaryChoice = sc.nextInt();
+                    chooseListMenuOptionsAvailableCars(tertiaryChoice);
+                } else {
+                    System.out.println("Goodbye!");
+                }
                 break;
 
             case 2:
@@ -150,6 +228,15 @@ public class Shop {
                         models.add(cars.get(i).getCarBrandDetails().getModel());
                         System.out.println(i + 1 + ". " + cars.get(i).getCarBrandDetails().getModel());
                     }
+                }
+                System.out.println("Press 1 to go back or anything else to exit");
+                secondaryChoice = sc.nextInt();
+                if (secondaryChoice == 1) {
+                    showListMenuOptions();
+                    int tertiaryChoice = sc.nextInt();
+                    chooseListMenuOptionsAvailableCars(tertiaryChoice);
+                } else {
+                    System.out.println("Goodbye!");
                 }
                 break;
 
@@ -164,17 +251,28 @@ public class Shop {
                                 cars.get(i).getCarBrandDetails().getYear());
                     }
                 }
+                System.out.println("Press 1 to go back or anything else to exit");
+                secondaryChoice = sc.nextInt();
+                if (secondaryChoice == 1) {
+                    showListMenuOptions();
+                    int tertiaryChoice = sc.nextInt();
+                    chooseListMenuOptionsAvailableCars(tertiaryChoice);
+                } else {
+                    System.out.println("Goodbye!");
+                }
                 break;
 
             //System.out.println("Option in development");
 
             case 4:
                 showMenu();
-                chooseListMenuOptionsAvailableCars();
+                int tertiaryChoice = sc.nextInt();
+                chooseListMenuOptionsAvailableCars(tertiaryChoice);
         }
     }
 
     public void listRentedCars() {
+        Scanner sc = new Scanner(System.in);
         System.out.println("These cars are rented:");
         for (int i = 0; i < cars.size(); i++) {
             if (cars.get(i).isRented()) {
@@ -182,22 +280,38 @@ public class Shop {
                         cars.get(i).getCarBrandDetails().getModel() + " with the number " + (i + 1));
             }
         }
+        System.out.println("Press 1 to go back or anything else to exit");
+        int secondaryChoice = sc.nextInt();
+        if (secondaryChoice == 1) {
+            showMenu();
+            int tertiaryChoice = sc.nextInt();
+            chooseFromMenu(tertiaryChoice);
+        } else {
+            System.out.println("Goodbye!");
+        }
     }
 
     public void checkIncome() {
+        Scanner sc = new Scanner(System.in);
         int currentIncome = 0;
         for (int i = 0; i < cars.size(); i++) {
             if (cars.get(i).isRented()) {
                 currentIncome += cars.get(i).getCarBrandDetails().getPrice() *
-                        cars.get(i).getRentPeriodDays();
+                        cars.get(i).getRentPeriodDays() - cars.get(i).getCarBrandDetails().getPrice() *
+                        cars.get(i).getRentPeriodDays() * calculateDiscount(cars.get(i).getCarBrandDetails().getPrice(), cars.get(i).getRentPeriodDays()) / 100;
             }
         }
         System.out.println("Our income from currently rented cars is " + currentIncome + "$ " +
                 "and our total income is " + income + "$");
-    }
-
-    public void logout() {
-
+        System.out.println("Press 1 to go back or anything else to exit");
+        int secondaryChoice = sc.nextInt();
+        if (secondaryChoice == 1) {
+            showMenu();
+            int tertiaryChoice = sc.nextInt();
+            chooseFromMenu(tertiaryChoice);
+        } else {
+            System.out.println("Goodbye!");
+        }
     }
 
     public Integer calculateDiscount(int price, int numberOfDays) {
