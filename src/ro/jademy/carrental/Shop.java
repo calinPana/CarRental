@@ -87,7 +87,7 @@ public class Shop {
     public void chooseFromMenu(int option) {
         switch (option) {
             case 1:
-                System.out.println("--------------")
+                System.out.println("--------------");
                 System.out.println("|Our cars are:");
                 for (int i = 0; i < cars.size(); i++) {
                     System.out.println(i + 1 + ". " + cars.get(i).getCarBrandDetails().getMake() + " " + cars.get(i).getCarBrandDetails().getModel() +
@@ -105,6 +105,7 @@ public class Shop {
                     }
                 }
                 showListMenuOptions();
+                System.out.println("5. Rent a car");
                 chooseListMenuOptionsAvailableCars(option);
                 break;
             case 3:
@@ -268,8 +269,41 @@ public class Shop {
                 showMenu();
                 int tertiaryChoice = sc.nextInt();
                 chooseListMenuOptionsAvailableCars(tertiaryChoice);
+                break;
+
+            case 5:
+                System.out.println("Which car would you like to rent? Choose its number to continue");
+                for (int i = 0; i < cars.size(); i++) {
+                    if (!cars.get(i).isRented()) {
+                        System.out.println(i + 1 + ". " + cars.get(i).getCarBrandDetails().getMake() + " " +
+                                cars.get(i).getCarBrandDetails().getModel() + " which costs " +
+                                cars.get(i).getCarBrandDetails().getPrice() + "$");
+                    }
+                }
+                int rentChoice = sc.nextInt();
+                System.out.println("Great choice! How many days would you like to have it? Write down the number");
+                int daysNumberChoice = sc.nextInt();
+                System.out.println("Now we only need your First and last name. Please write it down");
+                String firstName = sc.nextLine();
+                String lastName = sc.nextLine();
+                for (int i = 0; i < customers.size(); i++) {
+                    if ((firstName.equals(customers.get(i).getFirstName()) &&
+                            (lastName.equals(customers.get(i).getLastName())))) {
+                        rent(customers.get(i), cars.get(rentChoice - 1), daysNumberChoice);
+                        System.out.println("You can go and take your car! Enjoy it! See you in " + daysNumberChoice + " days!");
+                        break;
+                    }
+                }
+                Customer customer = new Customer(firstName, lastName);
+                customers.add(customer);
+                rent(customer, cars.get(rentChoice - 1), daysNumberChoice);
+                System.out.println("You can go and take your car! Enjoy it! See you in " + daysNumberChoice + " days!");
+                break;
         }
+
+
     }
+
 
     public void listRentedCars() {
         Scanner sc = new Scanner(System.in);
