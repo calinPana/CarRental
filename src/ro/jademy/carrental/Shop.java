@@ -14,10 +14,12 @@ public class Shop {
     private ArrayList<Car> cars = new ArrayList<>();
     private ArrayList<Customer> customers = new ArrayList<>();
     private int income = 0;
+    Scanner sc;
 
     public Shop(ArrayList<Salesman> salesmen, ArrayList<Car> cars) {
         this.salesmen = salesmen;
         this.cars = cars;
+        sc = new Scanner(System.in);
     }
 
     public ArrayList<Customer> getCustomers() {
@@ -94,22 +96,25 @@ public class Shop {
                             " which costs " + cars.get(i).getCarBrandDetails().getPrice() + "$");
                 }
                 showListMenuOptions();
-                chooseListMenuOptionsAllCars(option);
+                int secondaryChoice = sc.nextInt();
+                chooseListMenuOptionsAllCars(secondaryChoice);
                 break;
             case 2:
                 System.out.println("Our available cars are:");
-                for (int i = 0; i < cars.size(); i++) {
-                    if (!cars.get(i).isRented()) {
+                for (int i = 0; i < cars.size() && !cars.get(i).isRented(); i++) {
+                    //if (!cars.get(i).isRented()) {
                         System.out.println(i + 1 + ". " + cars.get(i).getCarBrandDetails().getMake() + " " + cars.get(i).getCarBrandDetails().getModel() +
                                 " which costs " + cars.get(i).getCarBrandDetails().getPrice() + "$");
-                    }
+                    //}
                 }
                 showListMenuOptions();
                 System.out.println("5. Rent a car");
-                chooseListMenuOptionsAvailableCars(option);
+                secondaryChoice = sc.nextInt();
+                chooseListMenuOptionsAvailableCars(secondaryChoice);
                 break;
             case 3:
                 listRentedCars();
+                break;
             case 4:
                 checkIncome();
 
@@ -117,6 +122,7 @@ public class Shop {
             case 5:
                 System.out.println("Goodbye!");
                 login();
+                break;
             case 6:
                 System.out.println("Goodbye!");
                 break;
@@ -134,17 +140,18 @@ public class Shop {
         System.out.println("4. Back to previous menu");
     }
 
-    public void chooseListMenuOptionsAllCars(int option) {
-        Scanner sc = new Scanner(System.in);
-        int choice = sc.nextInt();
+    public void chooseListMenuOptionsAllCars(int choice) {
+        //Scanner sc = new Scanner(System.in);
+        //int choice = sc.nextInt();
+        int secondaryChoice;
         switch (choice) {
             case 1:
                 System.out.println("We have the following makes: ");
-                for (int i = 0; i < cars.size(); i++) {
+                for (int i = 0; i < cars.size(); ++i) {
                     System.out.println(i + 1 + ". " + cars.get(i).getCarBrandDetails().getMake());
                 }
                 System.out.println("Press 1 to go back or anything else to exit");
-                int secondaryChoice = sc.nextInt();
+                secondaryChoice = sc.nextInt();
                 if (secondaryChoice == 1) {
                     showListMenuOptions();
                     int tertiaryChoice = sc.nextInt();
@@ -197,11 +204,13 @@ public class Shop {
         }
     }
 
-    public void chooseListMenuOptionsAvailableCars(int option) {
+    public void chooseListMenuOptionsAvailableCars(int choice) {
         Scanner sc = new Scanner(System.in);
-        int choice = sc.nextInt();
+        int secondaryChoice;
+        //int choice = sc.nextInt();
         switch (choice) {
             case 1:
+            {
                 System.out.println("The following makes are available: ");
                 ArrayList<String> makes = new ArrayList<>();
                 for (int i = 0; i < cars.size(); i++) {
@@ -211,7 +220,7 @@ public class Shop {
                     }
                 }
                 System.out.println("Press 1 to go back or anything else to exit");
-                int secondaryChoice = sc.nextInt();
+                secondaryChoice = sc.nextInt();
                 if (secondaryChoice == 1) {
                     showListMenuOptions();
                     int tertiaryChoice = sc.nextInt();
@@ -220,7 +229,7 @@ public class Shop {
                     System.out.println("Goodbye!");
                 }
                 break;
-
+            }
             case 2:
                 System.out.println("The following models are available: ");
                 ArrayList<String> models = new ArrayList<>();

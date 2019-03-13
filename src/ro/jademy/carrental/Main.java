@@ -54,7 +54,7 @@ public class Main {
 //        System.out.println("Now please write your password");
 //        String password = sc.nextLine();
 
-        if (s.login()) {
+        if (/*s.login()*/true) {
             s.showMenu();
 
             //navigarea la infinit prin meniuri ar trebui facuta cu recursivitate, cred
